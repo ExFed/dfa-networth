@@ -32,5 +32,5 @@ jobs:
     - name: Upload plot
       uses: actions/upload-artifact@v4
       with:
-        name: plot
-        path: data/plot.png
+        name: plots
+        path: data/plot.*.png

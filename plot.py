@@ -103,7 +103,16 @@ def parse_yearquarter(yq: str):
 
 def plot_networth(networth):
     networth["Date"] = networth["Date"].apply(parse_yearquarter)
-    grouped = networth.groupby("Category")
+
+    percentiles = {
+        "TopPt1": r"99.9%-100%",
+        "RemainingTop1": r"99%-99.9%",
+        "Next9": r"90%-99%",
+        "Next40": r"50%-90%",
+        "Bottom50": r"0%-50%",
+    }
+    networth["CategoryLabel"] = networth["Category"].apply(percentiles.get)
+    grouped = networth.groupby("CategoryLabel")
 
     # Prepare data for stackplot
     dates = networth["Date"].unique()
@@ -134,12 +143,14 @@ def main():
     plt.xlabel("Date")
     plt.xticks(rotation=45, ha="right")
     plt.ylabel("Net worth")
-    plt.yscale("log")
-    plt.title("Net Worth vs Date by Wealth Percentile")
-    plt.subplots_adjust(right=0.7)
+    plt.title("Net Worth by Wealth Percentile vs Date and Sitting President")
+    plt.subplots_adjust(right=0.75)
     plt.legend(bbox_to_anchor=(1.04, 1), loc="upper left")
     plt.gcf().set_size_inches(10, 6)
-    plt.savefig(os.path.join(data_dir, "plot.png"), dpi=200)
+    plt.yscale("log")
+    plt.savefig(os.path.join(data_dir, "plot.log.png"), dpi=200)
+    plt.yscale("linear")
+    plt.savefig(os.path.join(data_dir, "plot.linear.png"), dpi=200)
 
 
 if __name__ == "__main__":
