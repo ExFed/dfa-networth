@@ -138,7 +138,8 @@ def main():
     plt.title("Net Worth vs Date by Wealth Percentile")
     plt.subplots_adjust(right=0.7)
     plt.legend(bbox_to_anchor=(1.04, 1), loc="upper left")
-    plt.show()
+    plt.gcf().set_size_inches(10, 6)
+    plt.savefig(os.path.join(data_dir, "plot.png"), dpi=200)
 
 
 if __name__ == "__main__":
